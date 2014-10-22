@@ -209,7 +209,7 @@ namespace NEAT
         parameters.insert("OnlyGaussianHiddenNodes", 0.0);
         parameters.insert("ExperimentType", 43.0);
         parameters.insert("OnlyAllowElitesToBreed", 0.0);
-		parameters.insert("NeedToInjectFitnessValuesFromCommandLine", 0.0);
+	parameters.insert("NeedToInjectFitnessValuesFromCommandLine", 0.0);
         parameters.insert("SaveVXAEvery", 100.0);
         parameters.insert("AlsoSaveFirstGens", 100.0);
         parameters.insert("PenaltyType", 1.0);
@@ -223,6 +223,8 @@ namespace NEAT
         parameters.insert("BoundingBoxY", 0.0);
         parameters.insert("BoundingBoxZ", 0.0);
         parameters.insert("FitnessNormalizedBySize", 0.0);
+	parameters.insert("BiLateralSymmetryX", 0.0);
+
 
 
 		cacheParameters();

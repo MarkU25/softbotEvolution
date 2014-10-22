@@ -13,7 +13,7 @@
 #include <tinyxml.h> // #include “tinyxml.h"?
 
 #ifdef VISUALIZESHAPES
-#include <SFML/Graphics.hpp>
+//#include <SFML/Graphics.hpp>
 #endif
 #include <sstream>
 #include <map>
@@ -208,8 +208,13 @@ namespace HCUBE
 
     	// loop through coordinates to populate it with the cells we found above  
     	for (std::map<Coords,int>::iterator it=cppnOutput.begin(); it!=cppnOutput.end(); ++it)
-		{
+	{
     		matrixForVoxelyze[it->first.x-minIndexX][it->first.y-minIndexY][it->first.z-minIndexZ] = it->second;
+		
+		if (NEAT::Globals::getSingleton()->getParameterValue("BiLaterailSymmetryX"))
+		{
+			matrixForVoxelyze[-(it->first.x-minIndexX)][it->first.y-minIndexY][it->first.z-minIndexZ] = it->second;
+		}
     	}
 
     	// create a vxa file describing our soft robot and environment (to be executed by the VoxCad GUI -- or underlying libraries, Voxelyze)
@@ -538,7 +543,14 @@ namespace HCUBE
 		// check if voxel is out of bounding box parameter form Softbots.dat.  -1 is to account for the voxel at 0,0,0
 		if ( NEAT::Globals::getSingleton()->getParameterValue("BoundingBoxX") > 0)
 		{
-			if ( x < -(NEAT::Globals::getSingleton()->getParameterValue("BoundingBoxX")-1)/2*voxelSize) { return true; }
+			if (NEAT::Globals::getSingleton()->getParameterValue("BiLateralSymmetryX"))
+			{		
+				if ( x < -(NEAT::Globals::getSingleton()->getParameterValue("BoundingBoxX")-1)/2*voxelSize) { return true; }
+			}
+			else
+			{
+				if ( x < 0) { return false; }
+			}
 			if ( x > NEAT::Globals::getSingleton()->getParameterValue("BoundingBoxX")/2*voxelSize) { return true; }
 		}
 		if ( NEAT::Globals::getSingleton()->getParameterValue("BoundingBoxY") > 0)

@@ -71,6 +71,7 @@ BoundingBoxX 0 					// The size limit of the creature in the x-direction, defaul
 BoundingBoxY 0 					// The size limit of the creature in the y-direction, default value of 0 means no limit.  
 BoundingBoxZ 0 					// The size limit of the creature in the z-direction, default value of 0 means no limit.  
 VoxelSize 0.01  				// physical size of each voxel in CPPN space (default: 0.01)
+BiLateralSymmetryX 0.0				// if true, enforces bilateral symmetry in the x-direction, centered at x=0
 
 ActuationsPerSecond 20 				// frequency of volumetric expansion/contraction for muscle cells (default: 40)
 NumActuationCycles 20 				// the length of each evaluation simulation in terms of actuation cycles of muscles (default: 10)
