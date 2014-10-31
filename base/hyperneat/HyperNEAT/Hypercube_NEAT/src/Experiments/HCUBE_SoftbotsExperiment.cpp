@@ -124,6 +124,13 @@ namespace HCUBE
 				{
 					cppnOutput[thisCoord] = thisMaterial;
 					voxelsFilled++;
+					if (NEAT::Globals::getSingleton()->getParameterValue("BiLateralSymmetryX"))
+			                {
+			                        Coords flippedCoord(-thisCoord.x,thisCoord.y,thisCoord.z);
+						cppnOutput[flippedCoord] = thisMaterial;
+               				}
+
+
 				}
 
 				// check up and down neighbors, if they haven't been checked yet, add them to the queue to be checked
@@ -210,11 +217,12 @@ namespace HCUBE
     	for (std::map<Coords,int>::iterator it=cppnOutput.begin(); it!=cppnOutput.end(); ++it)
 	{
     		matrixForVoxelyze[it->first.x-minIndexX][it->first.y-minIndexY][it->first.z-minIndexZ] = it->second;
-		
-		if (NEAT::Globals::getSingleton()->getParameterValue("BiLaterailSymmetryX"))
+		/*
+		if (NEAT::Globals::getSingleton()->getParameterValue("BiLateralSymmetryX"))
 		{
 			matrixForVoxelyze[-(it->first.x-minIndexX)][it->first.y-minIndexY][it->first.z-minIndexZ] = it->second;
 		}
+		*/
     	}
 
     	// create a vxa file describing our soft robot and environment (to be executed by the VoxCad GUI -- or underlying libraries, Voxelyze)
@@ -458,7 +466,7 @@ namespace HCUBE
 		// // copy the best vxa file from this generation to the archive
 		// if (NEAT::Globals::getSingleton()->getParameterValue("SaveAllChampVXAs"))
 		// {
-		// 	int exitCode0 = std::system("mv thisGenChampVXA/* champVXAs");
+		// 	int exitCode0 = std::system("mv thisGenChampVXA"champVXAs");
 		// }
     }
 
@@ -544,12 +552,12 @@ namespace HCUBE
 		if ( NEAT::Globals::getSingleton()->getParameterValue("BoundingBoxX") > 0)
 		{
 			if (NEAT::Globals::getSingleton()->getParameterValue("BiLateralSymmetryX"))
-			{		
-				if ( x < -(NEAT::Globals::getSingleton()->getParameterValue("BoundingBoxX")-1)/2*voxelSize) { return true; }
+			{	
+				if ( x < 0 ) { return true;}
 			}
 			else
-			{
-				if ( x < 0) { return false; }
+			{ 
+				if ( x < -(NEAT::Globals::getSingleton()->getParameterValue("BoundingBoxX")-1)/2*voxelSize) { return true; }
 			}
 			if ( x > NEAT::Globals::getSingleton()->getParameterValue("BoundingBoxX")/2*voxelSize) { return true; }
 		}
@@ -573,7 +581,7 @@ namespace HCUBE
 		network.setValue("y",y);
 		network.setValue("z",z);
 		network.setValue("d", sqrt(pow(double(x),2.0)+pow(double(y),2.0)+pow(double(z),2.0)) );
-		network.setValue("Bias",0.3);                       
+		network.setValue("Bias",0.3);                   
 						
 		network.update(); //run the CPPN network
 		
